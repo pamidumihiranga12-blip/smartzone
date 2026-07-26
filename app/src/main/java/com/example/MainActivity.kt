@@ -34,7 +34,11 @@ import com.example.ui.theme.SmartZoneTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseManager.initialize(applicationContext)
+        try {
+            FirebaseManager.initialize(applicationContext)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
         enableEdgeToEdge()
         setContent {
             SmartZoneTheme {
