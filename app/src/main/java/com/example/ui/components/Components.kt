@@ -35,6 +35,8 @@ import com.example.model.AppLanguage
 import com.example.model.LanguageManager
 import androidx.compose.ui.res.painterResource
 import com.example.R
+import com.example.model.formatPrice
+import com.example.model.formatCurrency
 
 @Composable
 fun SmartZoneLogo(
@@ -621,20 +623,22 @@ fun ProductCard(
 
             Spacer(modifier = Modifier.height(6.dp))
 
+
+
             // Price Row with LKR (Rs.)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = "Rs. ${String.format("%,.0f", product.price)}",
+                    text = "Rs. ${formatPrice(product.price)}",
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Black,
                     color = SmartZoneNavy
                 )
                 if (product.originalPrice > product.price) {
                     Text(
-                        text = "Rs. ${String.format("%,.0f", product.originalPrice)}",
+                        text = "Rs. ${formatPrice(product.originalPrice)}",
                         fontSize = 10.sp,
                         color = TextMuted,
                         textDecoration = TextDecoration.LineThrough
@@ -648,7 +652,7 @@ fun ProductCard(
                 modifier = Modifier.padding(top = 2.dp)
             ) {
                 Text(
-                    text = "or up to 4 x Rs ${String.format("%,.2f", payzyInstallment)} with ",
+                    text = "or up to 4 x Rs ${formatCurrency(payzyInstallment)} with ",
                     fontSize = 9.sp,
                     color = TextMuted
                 )

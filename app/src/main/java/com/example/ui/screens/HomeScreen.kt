@@ -112,7 +112,7 @@ fun HomeScreen(
                 }
             }
         } else {
-            items(products, key = { it.id }) { product ->
+            items(products) { product ->
                 ProductCard(
                     product = product,
                     isWishlisted = wishlistIds.contains(product.id),

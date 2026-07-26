@@ -106,86 +106,82 @@ fun SmartZoneApp(viewModel: ShopViewModel = viewModel()) {
         products.filter { wishlistIds.contains(it.id) }
     }
 
-    Scaffold(
-        topBar = {
-            if (currentRoute !in listOf(Screen.Splash.route, Screen.Login.route, Screen.Checkout.route, Screen.ProductDetail.route)) {
-                SmartZoneHeader(
-                    searchQuery = filterState.searchQuery,
-                    onSearchChange = {
-                        viewModel.updateSearchQuery(it)
-                        if (currentRoute != Screen.Shop.route && currentRoute != Screen.Home.route) {
-                            navController.navigate(Screen.Shop.route)
-                        }
-                    },
-                    onFilterClick = { showFilterSheet = true },
-                    unreadNotificationCount = unreadNotifs,
-                    onNotificationClick = { navController.navigate(Screen.Notifications.route) },
-                    currentLanguage = currentLanguage,
-                    onLanguageChange = { viewModel.setLanguage(it) },
-                    onProfileClick = { navController.navigate(Screen.Profile.route) },
-                    onCartClick = { navController.navigate(Screen.Cart.route) },
-                    cartItemCount = cartWithProducts.sumOf { it.quantity }
-                )
-            }
-        },
-        bottomBar = {
-            if (currentRoute !in listOf(Screen.Splash.route, Screen.Login.route, Screen.Checkout.route)) {
-                NavigationBar(
-                    containerColor = SmartZoneNavy,
-                    modifier = Modifier.testTag("bottom_navigation_bar")
-                ) {
-                    bottomNavItems.forEach { screen ->
-                        val isSelected = currentRoute == screen.route
-                        NavigationBarItem(
-                            selected = isSelected,
-                            onClick = {
-                                if (currentRoute != screen.route) {
-                                    navController.navigate(screen.route) {
-                                        popUpTo(Screen.Home.route) { saveState = true }
-                                        launchSingleTop = true
-                                        restoreState = true
+    var showSplashScreen by remember { mutableStateOf(true) }
+
+    if (showSplashScreen) {
+        SplashScreen(onSplashFinished = { showSplashScreen = false })
+    } else {
+        Scaffold(
+            topBar = {
+                if (currentRoute !in listOf(Screen.Login.route, Screen.Checkout.route, Screen.ProductDetail.route)) {
+                    SmartZoneHeader(
+                        searchQuery = filterState.searchQuery,
+                        onSearchChange = {
+                            viewModel.updateSearchQuery(it)
+                            if (currentRoute != Screen.Shop.route && currentRoute != Screen.Home.route) {
+                                navController.navigate(Screen.Shop.route)
+                            }
+                        },
+                        onFilterClick = { showFilterSheet = true },
+                        unreadNotificationCount = unreadNotifs,
+                        onNotificationClick = { navController.navigate(Screen.Notifications.route) },
+                        currentLanguage = currentLanguage,
+                        onLanguageChange = { viewModel.setLanguage(it) },
+                        onProfileClick = { navController.navigate(Screen.Profile.route) },
+                        onCartClick = { navController.navigate(Screen.Cart.route) },
+                        cartItemCount = cartWithProducts.sumOf { it.quantity }
+                    )
+                }
+            },
+            bottomBar = {
+                if (currentRoute !in listOf(Screen.Login.route, Screen.Checkout.route)) {
+                    NavigationBar(
+                        containerColor = SmartZoneNavy,
+                        modifier = Modifier.testTag("bottom_navigation_bar")
+                    ) {
+                        bottomNavItems.forEach { screen ->
+                            val isSelected = currentRoute == screen.route
+                            NavigationBarItem(
+                                selected = isSelected,
+                                onClick = {
+                                    if (currentRoute != screen.route) {
+                                        navController.navigate(screen.route) {
+                                            popUpTo(Screen.Home.route) { saveState = true }
+                                            launchSingleTop = true
+                                            restoreState = true
+                                        }
                                     }
-                                }
-                            },
-                            icon = {
-                                Icon(
-                                    imageVector = screen.icon,
-                                    contentDescription = screen.route
+                                },
+                                icon = {
+                                    Icon(
+                                        imageVector = screen.icon,
+                                        contentDescription = screen.route
+                                    )
+                                },
+                                label = {
+                                    Text(
+                                        text = LanguageManager.getString(screen.titleKey, currentLanguage),
+                                        fontSize = 10.sp
+                                    )
+                                },
+                                colors = NavigationBarItemDefaults.colors(
+                                    selectedIconColor = SmartZoneNavy,
+                                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                                    indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f)
                                 )
-                            },
-                            label = {
-                                Text(
-                                    text = LanguageManager.getString(screen.titleKey, currentLanguage),
-                                    fontSize = 10.sp
-                                )
-                            },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = SmartZoneNavy,
-                                selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                                unselectedIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
-                                unselectedTextColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f)
                             )
-                        )
+                        }
                     }
                 }
             }
-        }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            NavHost(
-                navController = navController,
-                startDestination = Screen.Splash.route
-            ) {
-                composable(Screen.Splash.route) {
-                    SplashScreen(
-                        onSplashFinished = {
-                            navController.navigate(Screen.Home.route) {
-                                popUpTo(Screen.Splash.route) { inclusive = true }
-                            }
-                        }
-                    )
-                }
+        ) { innerPadding ->
+            Box(modifier = Modifier.padding(innerPadding)) {
+                NavHost(
+                    navController = navController,
+                    startDestination = Screen.Home.route
+                ) {
                 composable(Screen.Home.route) {
                     HomeScreen(
                         products = products,

@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import com.example.model.FilterState
 import com.example.model.OrderStatusStep
 import com.example.model.SortOption
+import com.example.model.formatPrice
+import com.example.model.formatCurrency
 import com.example.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,7 +82,7 @@ fun FilterSheet(
 
             // Price Range Slider
             Text(
-                text = "Price Range: Rs. ${String.format("%,.0f", filterState.minPrice)} - Rs. ${String.format("%,.0f", filterState.maxPrice)}",
+                text = "Price Range: Rs. ${formatPrice(filterState.minPrice)} - Rs. ${formatPrice(filterState.maxPrice)}",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextDark
@@ -249,7 +251,7 @@ fun PaymentGatewaySelector(
     val payzyInstallment = payzyTotal / 4.0
 
     val methods = listOf(
-        PaymentOption("PayZy 4-Installments", "4 x Rs ${String.format("%,.2f", payzyInstallment)} (14% Fee Included)", Icons.Default.CreditScore, PayZyCyan),
+        PaymentOption("PayZy 4-Installments", "4 x Rs ${formatCurrency(payzyInstallment)} (14% Fee Included)", Icons.Default.CreditScore, PayZyCyan),
         PaymentOption("Credit / Debit Card", "Visa, Mastercard, AMEX Checkout", Icons.Default.CreditCard, SmartZoneBlue),
         PaymentOption("Cash On Delivery (COD)", "Pay with Cash upon delivery in Sri Lanka", Icons.Default.Payments, SmartZoneOrange),
         PaymentOption("Online Bank Transfer", "BOC Acc: 90231938 | IPMD WIJEGUNAWARDHANA", Icons.Default.AccountBalance, SmartZoneNavy)
@@ -308,23 +310,23 @@ fun PaymentGatewaySelector(
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text("Items Subtotal:", fontSize = 11.sp)
-                                    Text("Rs. ${String.format("%,.2f", totalAmount)}", fontSize = 11.sp)
+                                    Text("Rs. ${formatCurrency(totalAmount)}", fontSize = 11.sp)
                                 }
                                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text("PayZy Processing Fee (14%):", fontSize = 11.sp, color = SmartZoneOrange)
-                                    Text("+ Rs. ${String.format("%,.2f", payzyFee)}", fontSize = 11.sp, color = SmartZoneOrange, fontWeight = FontWeight.Bold)
+                                    Text("+ Rs. ${formatCurrency(payzyFee)}", fontSize = 11.sp, color = SmartZoneOrange, fontWeight = FontWeight.Bold)
                                 }
                                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
                                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text("Total Payable Amount:", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                    Text("Rs. ${String.format("%,.2f", payzyTotal)}", fontSize = 12.sp, fontWeight = FontWeight.Black, color = PayZyCyan)
+                                    Text("Rs. ${formatCurrency(payzyTotal)}", fontSize = 12.sp, fontWeight = FontWeight.Black, color = PayZyCyan)
                                 }
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Text("Monthly Payment Schedule (Split into 4):", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                Text("• 1st Payment (Today): Rs. ${String.format("%,.2f", payzyInstallment)}", fontSize = 10.sp)
-                                Text("• 2nd Payment (Month 1): Rs. ${String.format("%,.2f", payzyInstallment)}", fontSize = 10.sp)
-                                Text("• 3rd Payment (Month 2): Rs. ${String.format("%,.2f", payzyInstallment)}", fontSize = 10.sp)
-                                Text("• 4th Payment (Month 3): Rs. ${String.format("%,.2f", payzyInstallment)}", fontSize = 10.sp)
+                                Text("• 1st Payment (Today): Rs. ${formatCurrency(payzyInstallment)}", fontSize = 10.sp)
+                                Text("• 2nd Payment (Month 1): Rs. ${formatCurrency(payzyInstallment)}", fontSize = 10.sp)
+                                Text("• 3rd Payment (Month 2): Rs. ${formatCurrency(payzyInstallment)}", fontSize = 10.sp)
+                                Text("• 4th Payment (Month 3): Rs. ${formatCurrency(payzyInstallment)}", fontSize = 10.sp)
                             }
                         }
                     }
