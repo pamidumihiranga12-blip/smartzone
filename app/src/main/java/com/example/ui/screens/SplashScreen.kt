@@ -56,15 +56,33 @@ fun SplashScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(24.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.smartzone_logo),
-                contentDescription = "SmartZone Opening Logo",
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .size(240.dp)
-                    .scale(scale.value)
-                    .clip(RoundedCornerShape(20.dp))
-            )
+            try {
+                Image(
+                    painter = painterResource(id = R.drawable.smartzone_logo),
+                    contentDescription = "SmartZone Opening Logo",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .size(240.dp)
+                        .scale(scale.value)
+                        .clip(RoundedCornerShape(20.dp))
+                )
+            } catch (e: Throwable) {
+                Box(
+                    modifier = Modifier
+                        .size(180.dp)
+                        .scale(scale.value)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(SmartZoneCyan),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "SZ",
+                        fontSize = 64.sp,
+                        fontWeight = FontWeight.Black,
+                        color = Color.White
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 

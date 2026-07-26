@@ -39,7 +39,11 @@ class MainActivity : ComponentActivity() {
         } catch (e: Throwable) {
             e.printStackTrace()
         }
-        enableEdgeToEdge()
+        try {
+            enableEdgeToEdge()
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
         setContent {
             SmartZoneTheme {
                 SmartZoneApp()
