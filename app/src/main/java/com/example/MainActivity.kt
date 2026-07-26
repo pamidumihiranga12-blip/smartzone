@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
 }
 
 sealed class Screen(val route: String, val titleKey: String, val icon: ImageVector) {
+    object Splash : Screen("splash", "splash", Icons.Default.FlashOn)
     object Home : Screen("home", "home", Icons.Default.Home)
     object Shop : Screen("shop", "shop", Icons.Default.Storefront)
     object TrackOrder : Screen("track_order", "track_order", Icons.Default.LocalShipping)
@@ -87,7 +88,7 @@ fun SmartZoneApp(viewModel: ShopViewModel = viewModel()) {
     var showFilterSheet by remember { mutableStateOf(false) }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route ?: Screen.Home.route
+    val currentRoute = navBackStackEntry?.destination?.route ?: Screen.Splash.route
 
     val bottomNavItems = listOf(
         Screen.Home,
@@ -103,7 +104,7 @@ fun SmartZoneApp(viewModel: ShopViewModel = viewModel()) {
 
     Scaffold(
         topBar = {
-            if (currentRoute !in listOf(Screen.Login.route, Screen.Checkout.route, Screen.ProductDetail.route)) {
+            if (currentRoute !in listOf(Screen.Splash.route, Screen.Login.route, Screen.Checkout.route, Screen.ProductDetail.route)) {
                 SmartZoneHeader(
                     searchQuery = filterState.searchQuery,
                     onSearchChange = {
@@ -124,7 +125,7 @@ fun SmartZoneApp(viewModel: ShopViewModel = viewModel()) {
             }
         },
         bottomBar = {
-            if (currentRoute !in listOf(Screen.Login.route, Screen.Checkout.route)) {
+            if (currentRoute !in listOf(Screen.Splash.route, Screen.Login.route, Screen.Checkout.route)) {
                 NavigationBar(
                     containerColor = SmartZoneNavy,
                     modifier = Modifier.testTag("bottom_navigation_bar")
@@ -170,8 +171,17 @@ fun SmartZoneApp(viewModel: ShopViewModel = viewModel()) {
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(
                 navController = navController,
-                startDestination = Screen.Home.route
+                startDestination = Screen.Splash.route
             ) {
+                composable(Screen.Splash.route) {
+                    SplashScreen(
+                        onSplashFinished = {
+                            navController.navigate(Screen.Home.route) {
+                                popUpTo(Screen.Splash.route) { inclusive = true }
+                            }
+                        }
+                    )
+                }
                 composable(Screen.Home.route) {
                     HomeScreen(
                         products = products,

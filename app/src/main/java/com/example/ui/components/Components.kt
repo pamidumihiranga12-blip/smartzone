@@ -33,7 +33,8 @@ import coil.compose.AsyncImage
 import com.example.data.db.ProductEntity
 import com.example.model.AppLanguage
 import com.example.model.LanguageManager
-import com.example.ui.theme.*
+import androidx.compose.ui.res.painterResource
+import com.example.R
 
 @Composable
 fun SmartZoneLogo(
@@ -51,20 +52,14 @@ fun SmartZoneLogo(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Logo Badge Icon with Circuit Head & Lock
-            Box(
+            Image(
+                painter = painterResource(id = R.drawable.smartzone_logo),
+                contentDescription = "SmartZone Custom 3D Logo",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(if (showDetails) 48.dp else 36.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(
-                        Brush.linearGradient(
-                            listOf(Color(0xFF00D2FF), Color(0xFF6750A4), Color(0xFFFF6800))
-                        )
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Default.Router, contentDescription = "Logo", tint = Color.White, modifier = Modifier.size(22.dp))
-            }
+            )
 
             Spacer(modifier = Modifier.width(8.dp))
 
