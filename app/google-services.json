@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "977403967748",
+    "firebase_url": "https://srmobile-6091e-default-rtdb.firebaseio.com",
+    "project_id": "srmobile-6091e",
+    "storage_bucket": "srmobile-6091e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977403967748:android:a90a347b40126ec50f3851",
+        "android_client_info": {
+          "package_name": "com.aistudio.smartzone.xqlprs"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaKFHWjMFfabGw0l1NILs_kb8hF5FCRhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977403967748:android:a90a347b40126ec50f3851",
+        "android_client_info": {
+          "package_name": "com.example"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaKFHWjMFfabGw0l1NILs_kb8hF5FCRhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

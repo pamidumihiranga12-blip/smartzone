@@ -1,0 +1,6 @@
+{
+  "name": "SmartZone",
+  "description": "SmartZone Sri Lanka - Tech store for 4G/5G Routers, Antennas, TV Remotes, Unlock Services with PayZy and real-time order tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
