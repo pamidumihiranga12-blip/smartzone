@@ -1,6 +1,13 @@
 package com.example
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.util.TypedValue
+import android.widget.ScrollView
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -33,6 +40,21 @@ import com.example.ui.theme.SmartZoneTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            try {
+                val intent = Intent(applicationContext, CrashActivity::class.java).apply {
+                    putExtra("error", Log.getStackTraceString(throwable))
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                }
+                applicationContext.startActivity(intent)
+            } catch (e: Throwable) {
+                defaultHandler?.uncaughtException(thread, throwable)
+            }
+            android.os.Process.killProcess(android.os.Process.myPid())
+            System.exit(10)
+        }
+
         super.onCreate(savedInstanceState)
         try {
             FirebaseManager.initialize(applicationContext)
@@ -407,5 +429,22 @@ fun SmartZoneApp(viewModel: ShopViewModel = viewModel()) {
                 )
             }
         }
+    }
+}
+
+class CrashActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val scrollView = ScrollView(this)
+        val textView = TextView(this)
+        val errorText = intent.getStringExtra("error") ?: "Unknown error"
+        
+        textView.text = "App Crashed! Please take a screenshot of this screen and send it to us:\n\n$errorText"
+        textView.setTextColor(Color.RED)
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+        textView.setPadding(32, 32, 32, 32)
+        
+        scrollView.addView(textView)
+        setContentView(scrollView)
     }
 }
